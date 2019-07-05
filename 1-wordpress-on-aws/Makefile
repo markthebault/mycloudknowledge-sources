@@ -1,6 +1,6 @@
-deploy
+deploy:
 	cd terraform && terraform init
 	cd terraform && terraform apply
 
-destroy
+destroy:
 	cd terraform && terraform destroy
