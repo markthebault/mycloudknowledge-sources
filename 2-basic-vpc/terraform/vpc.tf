@@ -49,7 +49,7 @@ resource "aws_subnet" "example_public_az1" {
 
 resource "aws_subnet" "example_public_az2" {
   vpc_id            = aws_vpc.example.id
-  cidr_block        = var.public_subnet1_cidr
+  cidr_block        = var.public_subnet2_cidr
   availability_zone = local.az2
 
   tags = {
@@ -62,7 +62,7 @@ resource "aws_subnet" "example_public_az2" {
 # Subnet (private)
 resource "aws_subnet" "example_private_az1" {
   vpc_id            = aws_vpc.example.id
-  cidr_block        = var.private_subnet2_cidr
+  cidr_block        = var.private_subnet1_cidr
   availability_zone = local.az1
 
   tags = {
