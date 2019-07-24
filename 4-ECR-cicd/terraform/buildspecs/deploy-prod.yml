@@ -1,0 +1,20 @@
+---
+version: 0.2
+
+env:
+  variables:
+    key: "value"
+
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - aws --version
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+    commands:
+      - docker pull ${CONTAINER_REPOSITORY}:${IMAGE_TAG}
+  post_build:
+    commands:
+      - docker tag ${CONTAINER_REPOSITORY}:${IMAGE_TAG} ${CONTAINER_REPOSITORY}:${CONTAINER_LASTEST_TAG_VALUE}
+      - docker push ${CONTAINER_REPOSITORY}:${CONTAINER_LASTEST_TAG_VALUE}

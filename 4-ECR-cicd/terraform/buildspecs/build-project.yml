@@ -1,0 +1,24 @@
+---
+version: 0.2
+
+env:
+  variables:
+    key: "value"
+
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - aws --version
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - OTHER_TAG=${CONTAINER_LASTEST_TAG_VALUE:=$IMAGE_TAG}
+  build:
+    commands:
+      - make build image_name=$CONTAINER_REPOSITORY image_tag=$IMAGE_TAG
+      - make tests image_name=$CONTAINER_REPOSITORY image_tag=$IMAGE_TAG
+  post_build:
+    commands:
+      - make push image_name=$CONTAINER_REPOSITORY image_tag=$IMAGE_TAG
+      - docker tag ${CONTAINER_REPOSITORY}:${IMAGE_TAG} ${CONTAINER_REPOSITORY}:${OTHER_TAG}
+      - docker push ${CONTAINER_REPOSITORY}:${OTHER_TAG}
