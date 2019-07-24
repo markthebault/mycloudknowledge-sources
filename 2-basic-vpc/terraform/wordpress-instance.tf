@@ -54,7 +54,7 @@ resource "aws_instance" "wordpress" {
 #! /bin/bash
 docker run -d --restart unless-stopped --name wordpress \
     -p 80:80 \
-    -e WORDPRESS_DB_HOST="${module.db.this_db_instance_endpoint}" \
+    -e WORDPRESS_DB_HOST="${split(":", module.db.this_db_instance_endpoint)[0]}" \
     -e WORDPRESS_DB_USER="${var.rds_master_user}" \
     -e WORDPRESS_DB_PASSWORD="${var.rds_master_user_password}" \
     -e WORDPRESS_DB_NAME="${var.rds_database}" \
