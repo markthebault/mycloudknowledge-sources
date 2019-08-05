@@ -11,3 +11,12 @@ variable "gcp_project" {
 variable "gcp_credentials" {
 
 }
+
+variable "aws_asn" {
+  default = 64512
+}
+
+
+variable "gcp_asn" {
+  default = 65000
+}

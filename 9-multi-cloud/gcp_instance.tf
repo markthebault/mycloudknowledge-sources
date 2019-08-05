@@ -12,7 +12,7 @@ resource "google_compute_instance" "default" {
   machine_type = "g1-small"
   zone         = "${var.gcp_region}-b"
 
-  #tags = ["web-icmp"]
+  tags = ["web-icmp", "ssh-internet"]
 
   boot_disk {
     initialize_params {
@@ -31,6 +31,16 @@ resource "google_compute_instance" "default" {
   }
 
   metadata = {
-    foo = "bar"
+    Environment = "Dev"
+    Tier        = "Public"
+    ssh-keys    = "James.Bond:${file("~/.ssh/id_rsa.pub")}"
   }
+}
+
+output "gcp_instance_public_ip" {
+  value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+}
+
+output "gcp_instance_private_ip" {
+  value = google_compute_instance.default.network_interface.0.network_ip
 }

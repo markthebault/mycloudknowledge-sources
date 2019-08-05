@@ -37,16 +37,32 @@ module "gcp_vpc" {
 }
 
 
-resource "google_compute_firewall" "default" {
-  name    = "allow-icmp"
+resource "google_compute_firewall" "icmp_private_network" {
+  name    = "allow-icmp-private-net"
   network = module.gcp_vpc.network_name
 
   allow {
     protocol = "icmp"
   }
 
+  source_ranges = ["10.0.0.0/8"]
+
+
+  target_tags = ["web-icmp"]
+}
+
+
+resource "google_compute_firewall" "ssh_from_the_world" {
+  name    = "allow-ssh-internet"
+  network = module.gcp_vpc.network_name
+
+  allow {
+    protocol = "tcp"
+    ports    = [22]
+  }
+
   source_ranges = ["0.0.0.0/0"]
 
 
-  source_tags = ["web-icmp"]
+  target_tags = ["ssh-internet"]
 }
