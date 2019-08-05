@@ -42,4 +42,3 @@ git.clean:
 
 aws.upload-ssh-key:
 	@sh ../upload-ssh-public-key.sh
-	# @git config core.sshCommand "ssh -F $(PWD)/.ssh_config"
