@@ -20,3 +20,8 @@ variable "aws_asn" {
 variable "gcp_asn" {
   default = 65000
 }
+
+
+variable "enable_cassandra" {
+  default = false
+}
